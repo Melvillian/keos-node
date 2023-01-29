@@ -72,7 +72,7 @@ const getTextToSummarize = (category: Category): string => {
 };
 
 const createSummarization = async (textToSummarize: string): Promise<string> => {
-  const summarizePrefix = 'Summarize this for a second-grade student:\n\n';
+  const summarizePrefix = 'Summarize this for a technical college student:\n\n';
 
   // create a completion and get response from
   // completion.data.choices[0].text
