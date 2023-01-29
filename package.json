@@ -3,8 +3,8 @@
   "version": "1.0.0",
   "description": "academic article summarizer",
   "main": "dist/index.js",
-  "repository": "https://github.com/DeathVenom54/typescript-minimal-starter.git",
-  "author": "DeathVenom54 <fdragon602@gmail.com>",
+  "repository": "https://github.com/Melvillian/keos-node.git",
+  "author": "Alex Melville",
   "license": "MIT",
   "private": true,
   "devDependencies": {

@@ -26,12 +26,12 @@ const main = async () => {
 
 const getTextToSummarize = (): string => {
   // TODO make it work for multiple abstracts
-  const text = abstracts[0].text;
+  const text = abstracts[1].text;
 
   return text;
 };
 
-const createSummarization = async (textToSummarize: string): string => {
+const createSummarization = async (textToSummarize: string): Promise<string> => {
   const summarizePrefix = 'Summarize this for a second-grade student:\n\n';
 
   // create a completion and get response from
@@ -43,7 +43,7 @@ const createSummarization = async (textToSummarize: string): string => {
   const completion = await openai.createCompletion({
     model,
     prompt,
-    MAX_TOKENS,
+    max_tokens: MAX_TOKENS,
   });
 
   return completion.data.choices[0].text;
