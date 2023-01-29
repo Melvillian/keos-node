@@ -7,6 +7,12 @@ const abstracts = require('./abstracts.json');
 // I think I can increase this to 2048, but I'm not sure.
 const MAX_TOKENS = 500;
 
+enum Category {
+  Biology = 'Biology',
+  Computer_Science = 'Computer Science',
+  Economics = 'Economics',
+}
+
 dotenv.config();
 
 const configuration = new Configuration({
@@ -16,7 +22,9 @@ const openai = new OpenAIApi(configuration);
 
 const main = async () => {
   try {
-    const textToSummarize = getTextToSummarize();
+    const userChoice = await promptUserAndGetChoice();
+
+    const textToSummarize = getTextToSummarize(userChoice);
     const summarization = await createSummarization(textToSummarize);
     console.log(summarization);
   } catch (error: any) {
@@ -24,11 +32,13 @@ const main = async () => {
   }
 };
 
-const getTextToSummarize = (): string => {
-  // TODO make it work for multiple abstracts
-  const text = abstracts[1].text;
+const promptUserAndGetChoice = async (): Promise<Category> => {};
 
-  return text;
+const getTextToSummarize = (category: Category): string => {
+  const abstractsWithCategory = abstracts.filter((abstract: any) => abstract.category === category);
+  const randomAbstract = abstractsWithCategory[Math.floor(Math.random() * abstractsWithCategory.length)];
+
+  return randomAbstract.text;
 };
 
 const createSummarization = async (textToSummarize: string): Promise<string> => {
