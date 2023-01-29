@@ -1,5 +1,6 @@
 const { Configuration, OpenAIApi } = require('openai');
 const dotenv = require('dotenv');
+const promptLibrary = require('prompt');
 
 const abstracts = require('./abstracts.json');
 
@@ -32,7 +33,36 @@ const main = async () => {
   }
 };
 
-const promptUserAndGetChoice = async (): Promise<Category> => {};
+const promptUserAndGetChoice = async (): Promise<Category> => {
+  const schema = {
+    properties: {
+      category: {
+        type: 'number',
+        message: `Please enter a category:
+        1: Biology
+        2: Computer Science
+        3: Economics
+      `,
+        required: true,
+        before: (value: string) => {
+          switch (value) {
+            case '1':
+              return Category.Biology;
+            case '2':
+              return Category.Computer_Science;
+            case '3':
+              return Category.Economics;
+            default:
+              throw new Error(`Invalid category: ${value}`);
+          }
+        },
+      },
+    },
+  };
+  promptLibrary.start();
+  const { category } = await promptLibrary.get(schema);
+  return category;
+};
 
 const getTextToSummarize = (category: Category): string => {
   const abstractsWithCategory = abstracts.filter((abstract: any) => abstract.category === category);
