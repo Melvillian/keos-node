@@ -1,7 +1,7 @@
 {
-  "name": "your-project-name",
+  "name": "keos-node",
   "version": "1.0.0",
-  "description": "Your project description",
+  "description": "academic article summarizer",
   "main": "dist/index.js",
   "repository": "https://github.com/DeathVenom54/typescript-minimal-starter.git",
   "author": "DeathVenom54 <fdragon602@gmail.com>",
