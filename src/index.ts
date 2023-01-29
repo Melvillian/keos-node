@@ -8,23 +8,36 @@ const configuration = new Configuration({
 });
 const openai = new OpenAIApi(configuration);
 
-async function main() {
+const main = async () => {
   try {
-    const completion = await openai.createCompletion({
-      model: 'text-davinci-002',
-      prompt: 'Hello world',
-    });
-
-    console.log(completion.data.choices);
-    console.log(completion.data.choices[0].text);
+    await createSummarization();
   } catch (error: any) {
-    if (error.response) {
-      console.log(error.response.status);
-      console.log(error.response.data);
-    } else {
-      console.log(error.message);
-    }
+    handleError(error);
   }
-}
+};
+
+const createSummarization = async () => {
+  const summarizePrefix = 'Summarize this for a second-grade student:\n\n';
+
+  let textToSummarize = `TODO`;
+
+  // create a completion and get response from
+  // completion.data.choices[0].text
+  const completion = await openai.createCompletion({
+    model: 'text-davinci-003',
+    prompt: `${summarizePrefix}${textToSummarize}`,
+  });
+
+  console.log(completion.data.choices[0].text);
+};
+
+const handleError = (error: any) => {
+  if (error.response) {
+    console.log(error.response.status);
+    console.log(error.response.data);
+  } else {
+    console.log(error.message);
+  }
+};
 
 main();
