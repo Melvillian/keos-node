@@ -4,9 +4,9 @@ const promptLibrary = require('prompt');
 
 const abstracts = require('./abstracts.json');
 
-// OpenAI requests + responses are limited to 500 tokens.
+// OpenAI requests + responses are limited to 1000 tokens.
 // I think I can increase this to 2048, but I'm not sure.
-const MAX_TOKENS = 500;
+const MAX_TOKENS = 1000;
 
 enum Category {
   Biology = 'Biology',
@@ -24,7 +24,6 @@ const openai = new OpenAIApi(configuration);
 const main = async () => {
   try {
     const userChoice = await promptUserAndGetChoice();
-
     const textToSummarize = getTextToSummarize(userChoice);
     const summarization = await createSummarization(textToSummarize);
     console.log(summarization);
@@ -37,8 +36,8 @@ const promptUserAndGetChoice = async (): Promise<Category> => {
   const schema = {
     properties: {
       category: {
-        type: 'number',
-        message: `Please enter a category:
+        type: 'string',
+        description: `Please enter a category:
         1: Biology
         2: Computer Science
         3: Economics
@@ -53,7 +52,7 @@ const promptUserAndGetChoice = async (): Promise<Category> => {
             case '3':
               return Category.Economics;
             default:
-              throw new Error(`Invalid category: ${value}`);
+              throw new Error(`Invalid category: ${value}, try one of (1, 2, 3)`);
           }
         },
       },
@@ -66,7 +65,8 @@ const promptUserAndGetChoice = async (): Promise<Category> => {
 
 const getTextToSummarize = (category: Category): string => {
   const abstractsWithCategory = abstracts.filter((abstract: any) => abstract.category === category);
-  const randomAbstract = abstractsWithCategory[Math.floor(Math.random() * abstractsWithCategory.length)];
+  const index = Math.floor(Math.random() * abstractsWithCategory.length);
+  const randomAbstract = abstractsWithCategory[index];
 
   return randomAbstract.text;
 };
